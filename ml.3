@@ -1,1 +1,105 @@
-this is my new file
+import numpy as np # linear algebra
+import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
+import matplotlib.pyplot as plt       # matplotlib.pyplot plots data
+%matplotlib inline
+import seaborn as sns
+
+pdata = pd.read_csv("/content/archive (6).zip")
+
+pdata.shape #check number of columns and rows in data frame
+
+pdata.shape #check number of columns and rows in data frame
+
+pdata.tail() # To check first 5 rows of data set
+
+pdata.isnull().values.any() # If there are any null values in data set
+
+pdata.isnull().values.any() # If there are any null values in data set
+
+
+
+pdata.corr() # It will show correlation matrixc
+
+# However we want to see correlation in graphical representation so below is function for that
+def plot_corr(df, size=11):
+    corr = df.corr()
+    fig, ax = plt.subplots(figsize=(size, size))
+    ax.matshow(corr)
+    plt.xticks(range(len(corr.columns)), corr.columns)
+    plt.yticks(range(len(corr.columns)), corr.columns
+
+    plot_corr(pdata)
+
+    sns.pairplot(pdata,diag_kind='kde')
+
+    from sklearn.model_selection import train_test_split
+
+X = pdata.drop('class',axis=1)     # Predictor feature columns (8 X m)
+Y = pdata['class']   # Predicted class (1=True, 0=False) (1 X m)
+
+x_train, x_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=1)
+# 1 is just any random seed number
+
+x_train.head()
+
+print("{0:0.2f}% data is in training set".format((len(x_train)/len(pdata.index)) * 100))
+print("{0:0.2f}% data is in test set".format((len(x_test)/len(pdata.index)) * 100))
+
+x_train.head()
+
+x_train.info()
+
+#from sklearn.preprocessing import Imputer
+#my_imputer = Imputer()
+#data_with_imputed_values = my_imputer.fit_transform(original_data)
+
+from sklearn.impute import SimpleImputer
+rep_0 = SimpleImputer(missing_values=0, strategy="mean")
+cols=x_train.columns
+x_train = pd.DataFrame(rep_0.fit_transform(x_train))
+x_test = pd.DataFrame(rep_0.fit_transform(x_test))
+
+x_train.columns = cols
+x_test.columns = cols
+
+x_train.head()
+
+from sklearn import metrics
+
+from sklearn.linear_model import LogisticRegression
+
+# Fit the model on train
+model = LogisticRegression()
+model.fit(x_train, y_train)
+#predict on test
+y_predict = model.predict(x_test)
+
+from sklearn import metrics
+
+from sklearn.linear_model import LogisticRegression
+
+# Fit the model on train
+model = LogisticRegression()
+model.fit(x_train, y_train)
+#predict on test
+y_predict = model.predict(x_test)
+
+oef_df = pd.DataFrame(model.coef_)
+coef_df['intercept'] = model.intercept_
+print
+c(coef_df)
+
+C:\Users\91994\anaconda3\lib\site-packages\sklearn\linear_model\_logistic.py:818: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. of ITERATIONS REACHED LIMIT.
+
+re = model.score(x_test, y_test)
+print(model_score)model_sco
+
+cm=metrics.confusion_matrix(y_test, y_predict, labels=[1, 0])
+
+df_cm = pd.DataFrame(cm, index = [i for i in ["1","0"]],
+                  columns = [i for i in ["Predict 1","Predict 0"]])
+plt.figure(figsize = (7,5))
+sns.heatmap(df_cm, annot=True)
+
+
